@@ -1,9 +1,21 @@
 package Model;
 
+import Controller.ReadFile;
+
+import java.util.ArrayList;
+
 public class RedBlack<K extends Comparable<K>,V> {
     private Association<K, V> association;
     public Node root;
     private boolean isRed=true;
+
+    public void createRB(String fpath){
+        ArrayList<ArrayList<String>> array = ReadFile.text(fpath);
+        for (ArrayList word: array){
+            Association ass= new Association<>(word.get(0), word.get(1));
+            insert(ass);
+        }
+    }
     public void insert(Association<K, V> association) {
         Node node = new Node(association, isRed);
         if (root == null) {
@@ -15,15 +27,14 @@ public class RedBlack<K extends Comparable<K>,V> {
         Node parent = null;
         while (current != null) {
             parent = current;
-            K pvalue= (K) parent.association.getKey();
-            if (association.getKey().compareTo(pvalue) < 1) {
+            if (association.getKey().compareTo((K) parent.association.getKey()) < 0 ) {
                 current = current.left;
             } else {
                 current = current.right;
             }
         }
         node.parent = parent;
-        if (association.getKey().compareTo((K) parent.association.getKey()) < 1) {
+        if (association.getKey().compareTo((K) parent.association.getKey()) < 0) {
             parent.left = node;
         } else {
             parent.right = node;
@@ -102,11 +113,16 @@ public class RedBlack<K extends Comparable<K>,V> {
         leftChild.right = node;
         node.parent = leftChild;
     }
-    public void preOrderTraversal(Node node) {
-        if (node != null) {
-            System.out.print(node.association.getKey() + " " + node.association.getValue() + " ");
-            preOrderTraversal(node.left);
-            preOrderTraversal(node.right);
+    public void show(Node root){
+        if (root != null){
+            if (root.left != null) {
+                show(root.left);
+            }
+            System.out.println("//////////////////////////////////////////////////////");
+            System.out.println(root.association.getKey() + " || " + root.association.getValue());
+            if (root.right != null) {
+                show(root.right);
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ReadFile {
@@ -18,7 +19,7 @@ public class ReadFile {
             File myObj = new File(fpath);
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
+                String data = myReader.nextLine().toLowerCase(Locale.ROOT);
                 ArrayList<String> words = new ArrayList<>(Arrays.asList(data.split(",")));
                 word.add(words);
             }
