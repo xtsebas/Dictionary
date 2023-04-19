@@ -151,4 +151,9 @@ public class RedBlack<K extends Comparable<K>,V> implements IMap<K,V>{
             }
         }
     }
+
+    @Override
+    public Node getRoot() {
+        return root;
+    }
 }

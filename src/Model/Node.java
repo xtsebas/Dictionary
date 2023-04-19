@@ -1,12 +1,12 @@
 package Model;
 
 public class Node<K, V> {
-    Association<K, V> association;
+    public Association<K, V> association;
     boolean isRed;
-    Node left;
-    Node right;
-    Node parent;
-    int height;
+    public Node left;
+    public Node right;
+    public Node parent;
+    public int height;
 
     public Node(Association<K, V> association, boolean color) {
         this.association = association;

@@ -36,8 +36,8 @@ public class ReadFile {
      * @param fpath
      * @return
      */
-    public static String oration(String fpath){
-        String data = "xd";
+    public static String oration(String fpath) {
+        String data = null;
         try {
             File myObj = new File(fpath);
             Scanner myReader = new Scanner(myObj);

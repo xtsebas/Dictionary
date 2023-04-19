@@ -17,4 +17,6 @@ public interface IMap<K extends Comparable<K>, V> {
     Node rightRotate(Node node);
 
     public void show (Node root);
+
+    public Node getRoot();
 }
