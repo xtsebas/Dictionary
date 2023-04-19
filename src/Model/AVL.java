@@ -4,9 +4,10 @@ import Controller.ReadFile;
 
 import java.util.ArrayList;
 
-public class AVL<K extends Comparable<K>, V> {
+public class AVL<K extends Comparable<K>, V> implements IMap<K,V>{
     public Node root;
 
+    @Override
     public void create(String fpath) {
         ArrayList<ArrayList<String>> array = ReadFile.text(fpath);
         for (ArrayList word: array){
@@ -15,6 +16,7 @@ public class AVL<K extends Comparable<K>, V> {
         }
     }
 
+    @Override
     public Node insertNode(Node node, Association<K, V> association) {
         if (node == null) {
             return new Node(association, false);
@@ -35,20 +37,15 @@ public class AVL<K extends Comparable<K>, V> {
             node.height = 1 + Math.max(0, node.right.height);
         }
 
-        // Calcular el factor de balance del nodo
         int balanceFactor = balanceFactor(node);
 
-        // Si el factor de balance es mayor que 1, el árbol está desequilibrado a la izquierda
         if (balanceFactor > 1) {
-            // Si el factor de balance del subárbol izquierdo es menor que 0, se requiere una rotación doble a la derecha
             if (balanceFactor(node.left) < 0) {
                 node.left = leftRotate(node.left);
             }
             node = rightRotate(node);
         }
-        // Si el factor de balance es menor que -1, el árbol está desequilibrado a la derecha
         else if (balanceFactor < -1) {
-            // Si el factor de balance del subárbol derecho es mayor que 0, se requiere una rotación doble a la izquierda
             if (balanceFactor(node.right) > 0) {
                 node.right = rightRotate(node.right);
             }
@@ -57,7 +54,12 @@ public class AVL<K extends Comparable<K>, V> {
         return node;
     }
 
-    private int balanceFactor(Node node) {
+    @Override
+    public void fixInsert(Node node) {
+    }
+
+    @Override
+    public int balanceFactor(Node node) {
         if (node.left != null && node.right!=null){
             return node.left.height - node.right.height;
         } else if (node.left != null && node.right ==null) {
@@ -69,7 +71,8 @@ public class AVL<K extends Comparable<K>, V> {
         }
     }
 
-    private int Height(Node node){
+    @Override
+    public int Height(Node node){
         if (node.left != null && node.right!=null){
             return node.height = 1 + Math.max(node.left.height, node.right.height);
         } else if (node.left != null && node.right ==null) {
@@ -80,7 +83,9 @@ public class AVL<K extends Comparable<K>, V> {
             return 0;
         }
     }
-    private Node leftRotate(Node node) {
+
+    @Override
+    public Node leftRotate(Node node) {
         Node newParent = node.right;
         node.right = newParent.left;
         newParent.left = node;
@@ -89,7 +94,8 @@ public class AVL<K extends Comparable<K>, V> {
         return newParent;
     }
 
-    private Node rightRotate(Node node) {
+    @Override
+    public Node rightRotate(Node node) {
         Node newParent = node.left;
         node.left = newParent.right;
         newParent.right = node;
@@ -97,6 +103,8 @@ public class AVL<K extends Comparable<K>, V> {
         newParent.height = Height(newParent);
         return newParent;
     }
+
+    @Override
     public void show(Node root){
         if (root != null){
             if (root.left != null) {
@@ -109,5 +117,4 @@ public class AVL<K extends Comparable<K>, V> {
             }
         }
     }
-
 }

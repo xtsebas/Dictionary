@@ -2,26 +2,31 @@ package Model;
 
 import Controller.ReadFile;
 
-import java.util.ArrayList;
+import java.util.*;
 
-public class RedBlack<K extends Comparable<K>,V> {
+public class RedBlack<K extends Comparable<K>,V> implements IMap<K,V>{
     private Association<K, V> association;
+    Scanner in= new Scanner(System.in);
     public Node root;
+    private Node flag;
     private boolean isRed=true;
 
-    public void createRB(String fpath){
+    @Override
+    public void create(String fpath){
         ArrayList<ArrayList<String>> array = ReadFile.text(fpath);
         for (ArrayList word: array){
             Association ass= new Association<>(word.get(0), word.get(1));
-            insert(ass);
+            root = insertNode(root, ass);
         }
     }
-    public void insert(Association<K, V> association) {
+
+    @Override
+    public Node insertNode(Node n, Association<K, V> association) {
         Node node = new Node(association, isRed);
         if (root == null) {
             root = node;
             node.isRed = false;
-            return;
+            return root;
         }
         Node current = root;
         Node parent = null;
@@ -40,8 +45,11 @@ public class RedBlack<K extends Comparable<K>,V> {
             parent.right = node;
         }
         fixInsert(node);
+        return root;
     }
-    private void fixInsert(Node node) {
+
+    @Override
+    public void fixInsert(Node node) {
         while (node != root && node.parent.isRed) {
             if (node.parent == node.parent.parent.left) {
                 Node uncle = node.parent.parent.right;
@@ -53,11 +61,11 @@ public class RedBlack<K extends Comparable<K>,V> {
                 } else {
                     if (node == node.parent.right) {
                         node = node.parent;
-                        rotateLeft(node);
+                        leftRotate(node);
                     }
                     node.parent.isRed = false;
                     node.parent.parent.isRed = true;
-                    rotateRight(node.parent.parent);
+                    rightRotate(node.parent.parent);
                 }
             } else {
                 Node uncle = node.parent.parent.left;
@@ -69,17 +77,29 @@ public class RedBlack<K extends Comparable<K>,V> {
                 } else {
                     if (node == node.parent.left) {
                         node = node.parent;
-                        rotateRight(node);
+                        rightRotate(node);
                     }
                     node.parent.isRed = false;
                     node.parent.parent.isRed = true;
-                    rotateLeft(node.parent.parent);
+                    leftRotate(node.parent.parent);
                 }
             }
         }
         root.isRed = false;
     }
-    private void rotateLeft(Node node) {
+
+    @Override
+    public int balanceFactor(Node node) {
+        return 0;
+    }
+
+    @Override
+    public int Height(Node node) {
+        return 0;
+    }
+
+    @Override
+    public Node leftRotate(Node node) {
         Node rightChild = node.right;
         node.right = rightChild.left;
         if (rightChild.left != null) {
@@ -95,8 +115,11 @@ public class RedBlack<K extends Comparable<K>,V> {
         }
         rightChild.left = node;
         node.parent = rightChild;
+        return flag;
     }
-    private void rotateRight(Node node) {
+
+    @Override
+    public Node rightRotate(Node node) {
         Node leftChild = node.left;
         node.left = leftChild.right;
         if (leftChild.right != null) {
@@ -112,7 +135,10 @@ public class RedBlack<K extends Comparable<K>,V> {
         }
         leftChild.right = node;
         node.parent = leftChild;
+        return flag;
     }
+
+    @Override
     public void show(Node root){
         if (root != null){
             if (root.left != null) {
