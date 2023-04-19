@@ -18,6 +18,9 @@ public class RedBlack<K extends Comparable<K>,V> implements IMap<K,V>{
             Association ass= new Association<>(word.get(0), word.get(1));
             root = insertNode(root, ass);
         }
+        if (root!=null){
+            System.out.println("Diccionario cargado exitosamente");
+        }
     }
 
     @Override

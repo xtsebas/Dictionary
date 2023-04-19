@@ -14,6 +14,9 @@ public class AVL<K extends Comparable<K>, V> implements IMap<K,V>{
             Association association= new Association<>(word.get(0), word.get(1));
             root = insertNode(root, association);
         }
+        if (root!=null){
+            System.out.println("Diccionario cargado exitosamente");
+        }
     }
 
     @Override
